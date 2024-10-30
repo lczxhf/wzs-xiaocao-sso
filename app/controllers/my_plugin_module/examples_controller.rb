@@ -20,7 +20,7 @@ module ::MyPluginModule
       cookies.delete(:destination_url)
 
       sso = DiscourseConnect.generate_sso(return_path, secure_session: secure_session)
-      sso.custom_fields["xiaocao_token"] = params[:xiaocao_token]
+      sso.custom_fields["token"] = params[:token]
       redirect_to sso_url(sso), allow_other_host: true
     end
 
@@ -29,6 +29,6 @@ module ::MyPluginModule
     def sso_url(sso)
       sso.to_url
     end
-    
+
   end
 end
