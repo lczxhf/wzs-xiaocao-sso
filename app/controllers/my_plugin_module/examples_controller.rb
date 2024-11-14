@@ -21,6 +21,7 @@ module ::MyPluginModule
 
       sso = DiscourseConnect.generate_sso(return_path, secure_session: secure_session)
       sso.custom_fields["token"] = params[:token]
+      sso.custom_fields["cid"] = params[:cid]
       redirect_to sso_url(sso), allow_other_host: true
     end
 

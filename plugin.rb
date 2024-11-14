@@ -18,14 +18,21 @@ require_relative "lib/my_plugin_module/engine"
 
 after_initialize do
   # Code which should run after Rails has finished booting
-  SessionController.class_eval do
-       protected
-       def check_local_login_allowed(user: nil, check_login_via_email: false)
-          return if user&.admin?
-          if (check_login_via_email && !SiteSetting.enable_local_logins_via_email) ||
-                !SiteSetting.enable_local_logins
-                raise Discourse::InvalidAccess, "SSO takes over local login or the local login is disallowed."
-          end
-       end
+  SessionController.skip_before_action :check_local_login_allowed, only: [:create]
+  # SessionController.class_eval do
+  #      protected
+  #      def check_local_login_allowed(user: nil, check_login_via_email: false)
+  #         return if user&.admin?
+  #         if (check_login_via_email && !SiteSetting.enable_local_logins_via_email) ||
+  #               !SiteSetting.enable_local_logins
+  #               raise Discourse::InvalidAccess, "SSO takes over local login or the local login is disallowed."
+  #         end
+  #      end
+  # end
+
+  DiscourseConnectBase.class_eval do
+    def unsigned_payload
+        self.to_h.to_json
+    end
   end
 end
