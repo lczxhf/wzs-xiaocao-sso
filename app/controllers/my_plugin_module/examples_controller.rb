@@ -22,13 +22,14 @@ module ::MyPluginModule
       sso = DiscourseConnect.generate_sso(return_path, secure_session: secure_session)
       sso.custom_fields["token"] = params[:token]
       sso.custom_fields["cid"] = params[:cid]
-      redirect_to sso_url(sso), allow_other_host: true
+      sso.custom_fields["apiwg"] = params[:apiwg]
+      redirect_to sso_url(sso,params[:apiwg]), allow_other_host: true
     end
 
     private
 
-    def sso_url(sso)
-      sso.to_url
+    def sso_url(sso,host)
+      sso.to_url(host ? "https://#{host}/:6443/v3/user/ssocheck" : nil)
     end
 
   end
