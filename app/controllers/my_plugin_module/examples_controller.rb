@@ -29,7 +29,7 @@ module ::MyPluginModule
     private
 
     def sso_url(sso,host)
-      sso.to_url(host ? "https://#{host}/:6443/v3/user/ssocheck" : nil)
+      sso.to_url(host ? "https://#{host}:6443/v3/user/ssocheck" : nil)
     end
 
   end
